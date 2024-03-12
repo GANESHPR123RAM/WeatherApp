@@ -49,11 +49,13 @@ body {
 
 
 .navbar-toggler {
-    color: gray;
+  
     font-size: 2rem;
     margin-top: 1rem;
 }
-
+.navbar-toggler-icon{
+    color: #000000;
+}
 .navbar a:hover {
     color: var(--main-color);
 }
