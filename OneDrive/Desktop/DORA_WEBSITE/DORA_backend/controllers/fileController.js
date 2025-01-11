@@ -1,4 +1,4 @@
-const { DoraModel, DoraTeamModel, TestimonialModel, EventsModel, DonarsModel, PdfModel } = require('../model/uploads-model');
+const {TickerModel, DoraModel,HomePdfModel, DoraTeamModel, TestimonialModel, EventsModel, DonarsModel, PdfModel } = require('../model/uploads-model');
 
 // Handle file upload
 const uploadDonars = async (req, res) => {
@@ -30,6 +30,25 @@ const uploadPdf = async (req, res) => {
     }
 
     const pdf = await PdfModel({ path: filePath, filename, name });
+    await pdf.save();
+
+    res.status(201).json({ message: 'pdf uploaded successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to upload pdf.' });
+  }
+};
+
+const HomePdfUpload = async (req, res) => {
+  try {
+    const { path: filePath, filename } = req.file;
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: 'Name of the pdf is required.' });
+    }
+
+    const pdf = await HomePdfModel({ path: filePath, filename, name });
     await pdf.save();
 
     res.status(201).json({ message: 'pdf uploaded successfully.' });
@@ -111,6 +130,45 @@ const Eventsuploads = async (req, res) => {
   }
 };
 
+const Tickeruploads = async (req, res) => {
+  try {
+    const { heading, Link } = req.body;
+
+    const Ticker = await TickerModel({ heading, Link });
+    await Ticker.save();
+
+    res.status(201).json({ message: 'Ticker uploaded successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to upload Ticker.' });
+  }
+};
+
+const GetTicker = async (req, res) => {
+  try {
+    const Ticker = await TickerModel.find();
+
+    if (!Ticker || Ticker.length === 0) {
+      return res.status(404).json({ message: 'No Ticker found.' });
+    }
+
+    res.status(200).json({ Ticker });
+  } catch (error) {
+    console.error(`Error fetching Ticker: ${error}`);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+const deleteTickerById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await TickerModel.deleteOne({ _id: id });
+    return res.status(200).json({ message: "User Deleted Successfuly" });
+  } catch (error) {
+    next(error);
+  }
+}
+
 const GetEvents = async (req, res) => {
   try {
     const Events = await EventsModel.find();
@@ -141,6 +199,37 @@ const getDonars = async (req, res) => {
     res.status(500).json({ message: 'Server error.' });
   }
 };
+
+const GetTPDF = async (req, res) => {
+  try {
+    const photos = await PdfModel.find();
+
+    if (!photos || photos.length === 0) {
+      return res.status(404).json({ message: 'No Pdf found.' });
+    }
+
+    res.status(200).json({ photos });
+  } catch (error) {
+    console.error(`Error fetching images: ${error}`);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+const GetHomePDF = async (req, res) => {
+  try {
+    const photos = await HomePdfModel.find();
+
+    if (!photos || photos.length === 0) {
+      return res.status(404).json({ message: 'No Pdf found.' });
+    }
+
+    res.status(200).json({ photos });
+  } catch (error) {
+    console.error(`Error fetching images: ${error}`);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
 
 const GetTestimonial = async (req, res) => {
   try {
@@ -318,7 +407,46 @@ const deleteTestimonialById = async (req, res) => {
   }
 }
 
+const updatPDFById = async (req, res) => {
+  try {
+
+    const id = req.params.id;
+    const updateUserData = req.body;
+    const updatedData = await PdfModel.updateOne({ _id: id }, {
+      $set: updateUserData,
+    })
+    return res.status(200).json(updatedData)
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+const deletePDFById = async (req, res,next) => {
+  try {
+    const id = req.params.id;
+    await PdfModel.deleteOne({ _id: id });
+    return res.status(200).json({ message: "User Deleted Successfuly" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const deleteHomePdfById = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await HomePdfModel.deleteOne({ _id: id });
+    return res.status(200).json({ message: "User Deleted Successfully" });
+  } catch (error) {
+    next(error); // Pass the error to the next middleware (error handler)
+  }
+};
+
+
 module.exports = {
+  deleteHomePdfById,
+  deletePDFById,
   updatDonarsById,
   deleteDonarsById,
   updatEventsById,
@@ -326,5 +454,25 @@ module.exports = {
   updatDoraById,
   deleteDoraById,
   updatTestimonialById,
-  deleteTestimonialById, updatDoraTeamById, deleteDoraTeamById, uploadPdf, uploadDonars, getDonars, Testimonialuploads, GetTestimonial, GetEvents, Eventsuploads, DoraTeamuploads, GetDoraTeam, Dorauploads, GetDora
+  deleteTestimonialById,
+  updatDoraTeamById,
+  deleteDoraTeamById,
+  uploadPdf,
+  uploadDonars,
+  getDonars,
+  Testimonialuploads,
+  GetTestimonial,
+  GetEvents,
+  Eventsuploads,
+  DoraTeamuploads,
+  GetDoraTeam,
+  Dorauploads,
+  GetDora,
+  updatPDFById,
+  GetTPDF,
+  GetHomePDF,
+  HomePdfUpload,
+  deleteTickerById,
+  Tickeruploads,
+  GetTicker
 };

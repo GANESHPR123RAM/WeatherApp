@@ -1,8 +1,5 @@
 const User = require('../model/user-model');
 const bcrypt = require("bcryptjs");
-// const Otp = require('../models/Otp')
-
-// const mailer = require("../validators/mailer");
 
 // home logic //
 const home = async (req, res) => {
@@ -28,19 +25,13 @@ const register = async (req, res, next) => {
 
         // Create the user
         const userCreated = await User.create({ username, email, phone, password });
-
-        // const msg = '<p>Hello '+username+', please <a href="http://localhost:5173/">Verify</a> your mail</p>';
-
-        // mailer.sendMail(email, 'Mail Verificatio', msg);
-
-        // res.status(201).json({ message: "User registered successfully" });
         res.status(201).json({
             msg: "Registration Successful",
             token: await userCreated.generateToken(),
             userId: userCreated._id.toString(),
         });
     } catch (error) {
-        // res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error" });
         next(error)
     }
 };
@@ -56,9 +47,7 @@ const login = async (req, res) => {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
-        // Compare the provided password with the stored hashed password
         const isMatch = await bcrypt.compare(password, userExist.password);
-        // const isMatch = await userExist.comparePassword(password)
         if (isMatch) {
             res.status(200).json({
                 msg: "Login successful",

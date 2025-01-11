@@ -24,7 +24,6 @@ const getUserById = async (req, res) => {
     } catch (error) {
         next(error);
     }
-
 }
 
 const updatUserById = async (req, res) => {

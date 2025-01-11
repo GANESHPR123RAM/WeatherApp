@@ -144,10 +144,25 @@ const DORASchema = new mongoose.Schema({
 
 });
 
+const Tickerchema = new mongoose.Schema({
+    heading: {
+        type: String,
+        require: true,
+    },
+    Link: {
+        type: String,
+        require: true,
+    }
+});
+
+const TickerModel = mongoose.model('Ticker',Tickerchema)
+const HomePdfModel = mongoose.model('HomePdf',PdfSchema)
 const PdfModel = mongoose.model('Pdf',PdfSchema)
 const DoraModel = mongoose.model("DORA",DORASchema)
 const DoraTeamModel= mongoose.model("DoraTeam",DoraTeamSchema)
 const EventsModel = mongoose.model("Events", EventsSchema)
 const TestimonialModel = mongoose.model("Testimonial", TestimonialSchema)
 const DonarsModel = mongoose.model("donars", DonarsSchema);
-module.exports = {PdfModel, DonarsModel, TestimonialModel, EventsModel,DoraTeamModel,DoraModel };
+module.exports = {TickerModel,HomePdfModel,PdfModel, DonarsModel, TestimonialModel, EventsModel,DoraTeamModel,DoraModel };
+
+

@@ -23,7 +23,16 @@ const {
   updatDoraById,
   deleteDoraById,
   updatTestimonialById,
-  deleteTestimonialById
+  deleteTestimonialById,
+  deletePDFById,
+  updatPDFById,
+  GetTPDF,
+  GetHomePDF,
+  HomePdfUpload,
+  deleteHomePdfById,
+  deleteTickerById,
+  Tickeruploads,
+  GetTicker
 } = require('../controllers/fileController');
 
 const router = express.Router();
@@ -72,5 +81,17 @@ router.route("/Testimonialuploads/delete/:id").delete(authMiddleware, adminMiddl
 
 // uploadPdf
 router.post('/uploadPdf', authMiddleware, adminMiddleware, upload.single('file'), uploadPdf);
+router.get('/GetTPDF', GetTPDF);
+router.route("/uploadPdf/update/:id").patch(authMiddleware, adminMiddleware, updatPDFById);
+router.route("/uploadPdf/delete/:id").delete(authMiddleware, adminMiddleware, deletePDFById);
+
+// uploadPdf
+router.post('/HomePdfUpload', authMiddleware, adminMiddleware, upload.single('file'), HomePdfUpload);
+router.get('/GetHomePDF', GetHomePDF);
+router.route("/HomePdfUpload/delete/:id").delete(authMiddleware, adminMiddleware, deleteHomePdfById);
+
+router.post('/Tickeruploads', authMiddleware, adminMiddleware, Tickeruploads);
+router.get('/GetTicker', GetTicker);
+router.route("/Tickeruploads/delete/:id").delete(authMiddleware, adminMiddleware, deleteTickerById);
 
 module.exports = router;
