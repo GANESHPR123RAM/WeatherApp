@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+body {
+    margin: 0%;
+    padding: 0%;
+    overflow-x: hidden;
+}
+
+.iii.auto-type {
+    font-family: Quicksand;
+}
+
+.auto-type {
+    font-family: Quicksand;
+}
+
+/* projact */
+
+.projact_box_1_left {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(107, 107, 107, 0.37);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    cursor: pointer;
+    position: relative;
+    transition: transform 200ms ease;
+    overflow: hidden;
+}
+
+.projact_box_1_left:before {
+    content: "";
+    position: absolute;
+    height: 150%;
+    width: 50px;
+    transform: rotate(-30deg);
+    background-color: rgba(255, 255, 255, 0.2);
+    left: -220px;
+}
+
+.projact_box_1_left:hover:before {
+    transition: left 500ms ease;
+    left: 60vw;
+}
+
